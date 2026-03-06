@@ -231,7 +231,9 @@
 
 <p>It can't be random one token at a time. It can <em>perform</em> randomness in a sequence. But even then, what it's really doing is reproducing our intuition about what randomness looks like. And our intuition is wrong.</p>
 
-<p>The batch sequences passed the obvious test. 502/498 looks perfect. You'd only catch the bias by measuring something you weren't expecting to measure. That's the thing worth remembering about LLM output generally: it's optimized to look right. The patterns that pass a glance&mdash;the code that compiles, the data that seems varied, the answer that sounds confident&mdash;can carry systematic biases you won't notice without the equivalent of a runs test. Something external that checks for the things the model was never optimizing for.</p>
+<p>LLMs are deterministic systems. Without constraints, the model produced 100% heads&mdash;the single most likely token, every time. With the right prompt structure, it got to 50/50, but still couldn't produce a streak of four, because nothing asked it to. It got exactly as far as our instructions could see, and no further. Everything else was filled in by the training data's defaults.</p>
+
+<p>There's no indeterminism in there. Just pattern-matching, shaped by whatever rules you gave it and whatever biases you didn't think to override. I suspect that's true of more than coin flips.</p>
 
 <hr>
 
