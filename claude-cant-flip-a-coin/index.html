@@ -229,13 +229,9 @@
 
 <p>I don't know why these specific numbers, but they're the same ones humans disproportionately pick when asked to "say a random number." The same pattern: the model doesn't generate randomness, it reproduces what humans think randomness looks like.</p>
 
-<h2>Constraints</h2>
+<p>We looked at those sequences and thought they looked random. Of course we did. The model learned what randomness looks like from people, and we can't tell our version apart from the real thing.</p>
 
-<p>The right prompt turned 200/0 into 502/498. The model didn't get better&mdash;it got better <em>constraints</em>. But even then, it only got as far as those constraints could see. We asked for frequency and got frequency. We didn't ask for streaks, and got none.</p>
-
-<p>We looked at those sequences and thought they looked random. Of course we did. The model learned what randomness looks like from people, and we can't tell our version apart from the real thing. That's how defaults work&mdash;you can't see them when you share them.</p>
-
-<p>It'll go exactly where you point it, and nowhere else. The rest is filled in by training data. Same reason a codebase without tests drifts toward whatever compiles, or a product without acceptance criteria drifts toward whatever looks done. An LLM's output is only as good as the rules it's measured against.</p>
+<p>The right prompt did turn 200/0 into 502/498. But it only got as far as we thought to ask. We checked frequency and got frequency. We didn't check for streaks, so we didn't get streaks. The model filled in everything else with defaults we share and didn't think to question.</p>
 
 <hr>
 
