@@ -229,9 +229,11 @@
 
 <p>I don't know why these specific numbers, but they're the same ones humans disproportionately pick when asked to "say a random number." The same pattern: the model doesn't generate randomness, it reproduces what humans think randomness looks like.</p>
 
-<p>We looked at those sequences and thought they looked random. Of course we did. The model learned what randomness looks like from people, and we can't tell our version apart from the real thing.</p>
+<p>The batch prompt was a constraint. It told the model what the output should look like, and the model matched it&mdash;502/498, right on target. But it only matched what we specified. We described frequency, so we got frequency. We said nothing about streaks, so the model fell back on its training data, which fell back on human intuition, which avoids streaks.</p>
 
-<p>The right prompt did turn 200/0 into 502/498. But it only got as far as we thought to ask. We checked frequency and got frequency. We didn't check for streaks, so we didn't get streaks. The model filled in everything else with defaults we share and didn't think to question.</p>
+<p>Every part of the output we didn't constrain was filled in by defaults. And we didn't notice, because we share the same defaults. The sequences looked random to us for the same reason the model produced them that way&mdash;we both learned the same folk theory of what randomness is supposed to look like.</p>
+
+<p>The model will match whatever rules you give it. For everything else, you get its best guess&mdash;which is really our best guess, reflected back.</p>
 
 <hr>
 
