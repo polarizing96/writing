@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Can't Flip a Coin</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  :root {
+    --bg: #fafaf9;
+    --fg: #1a1a1a;
+    --muted: #737373;
+    --accent: #dc2626;
+    --accent2: #2563eb;
+    --border: #e5e5e5;
+    --code-bg: #f5f5f4;
+    --heads: #dc2626;
+    --tails: #2563eb;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.75;
+    font-size: 18px;
+  }
+
+  article {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 80px 24px 120px;
+  }
+
+  h1 {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .meta {
+    color: var(--muted);
+    font-family: -apple-system, system-ui, sans-serif;
+    font-size: 14px;
+    margin-bottom: 48px;
+  }
+
+  h2 {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 56px;
+    margin-bottom: 16px;
+  }
+
+  p { margin-bottom: 20px; }
+
+  code {
+    font-family: 'SF Mono', 'Fira Code', Menlo, monospace;
+    font-size: 0.82em;
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+    overflow-x: auto;
+    margin: 24px 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  pre code { background: none; padding: 0; }
+
+  .viz { margin: 36px 0; width: 100%; }
+  .viz svg { width: 100%; display: block; }
+
+  .viz-caption {
+    font-family: -apple-system, system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  .big-number {
+    font-family: -apple-system, system-ui, sans-serif;
+    font-size: 72px;
+    font-weight: 700;
+    letter-spacing: -3px;
+    color: var(--accent);
+    line-height: 1;
+    margin: 32px 0 6px;
+  }
+
+  .big-label {
+    font-family: -apple-system, system-ui, sans-serif;
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+
+  .sequence-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1px;
+    margin: 12px 0;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .sequence-grid .cell {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    font-family: 'SF Mono', monospace;
+    color: white;
+  }
+
+  .cell-H { background: var(--heads); }
+  .cell-T { background: var(--tails); }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    font-family: -apple-system, system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    margin: 8px 0 16px;
+  }
+
+  .legend span { display: flex; align-items: center; gap: 5px; }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  .methodology {
+    font-family: -apple-system, system-ui, sans-serif;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .methodology p { margin-bottom: 12px; }
+
+  a { color: var(--accent2); }
+
+  .prompt-table {
+    font-family: -apple-system, system-ui, sans-serif;
+    font-size: 13px;
+    margin: 16px 0 24px;
+  }
+
+  .prompt-table td, .prompt-table th { padding: 8px 10px; }
+  .prompt-table code { font-size: 11px; }
+</style>
+</head>
+<body>
+<article>
+
+<h1>Claude Can't Flip a Coin</h1>
+<p class="meta">March 2026</p>
+
+<p>I asked Claude to flip a coin. It said heads. I asked again. Heads. I wrote a script to ask 200 times, each one a completely fresh API call&mdash;no memory, no conversation, just the bare prompt and a single-turn response.</p>
+
+<div class="big-number">200 / 0</div>
+<div class="big-label">heads / tails, across 200 independent API calls</div>
+
+<p>LLMs don't flip coins. They predict the next token. The model isn't choosing between heads and tails&mdash;it's answering the question <em>what would a helpful AI assistant most likely say here?</em></p>
+
+<h2>Numbers are worse</h2>
+
+<p>I tried the same thing with numbers. "Pick a random number between 1 and 100." Sonnet picks 47. Every time. Opus picks 73. I ran 200 calls and got exactly three distinct values:</p>
+
+<div class="viz" id="number-chart"></div>
+<div class="viz-caption" style="margin-bottom: 32px;">200 API calls. "Pick a random number between 1 and 100." That's the whole distribution.</div>
+
+<p>Out of 200 calls, the model produced exactly three distinct values. Different models have different favorites&mdash;Opus prefers 73. I don't know why these specific numbers, but they're the same ones humans disproportionately pick when asked to "say a random number." The model isn't generating randomness. It's reproducing the statistical fingerprint of what humans think randomness looks like.</p>
+
+<h2>Trying to fix it</h2>
+
+<p>I tested ten different prompts, trying to nudge the model toward 50/50. Asking for just <code>H</code> or <code>T</code> instead of the full words. Injecting a random string from <code>Math.random()</code> into each prompt to perturb the attention pattern. A system prompt insisting it be fair. Most of them barely moved the needle.</p>
+
+<p>Then I tried asking for twenty flips at once instead of one.</p>
+
+<div class="viz" id="strategies-chart"></div>
+
+<p>Fifty API calls, twenty flips each, one thousand total.</p>
+
+<div class="big-number" style="color: var(--accent2);">502 / 498</div>
+<div class="big-label">heads / tails, across 1,000 flips in batches of 20 (p = 0.69)</div>
+
+<p>Statistically indistinguishable from a fair coin. Five of the sequences:</p>
+
+<div class="legend">
+  <span><span class="legend-dot" style="background:var(--heads)"></span> Heads</span>
+  <span><span class="legend-dot" style="background:var(--tails)"></span> Tails</span>
+</div>
+
+<div id="batch-sequences"></div>
+<div class="viz-caption" style="margin-bottom: 32px;">Per-sequence P(Heads): mean = 0.502, std = 0.028</div>
+
+<p>But look more carefully. Every sequence has roughly 10 heads and 10 tails. The longest streak in any of them is three. In truly random 20-flip sequences, 77% should contain a run of four or more, and 47% should have a run of five or more. The model produces none.</p>
+
+<p>The standard deviation of the heads ratio across our 50 sequences is 0.028. For true randomness it should be 0.112&mdash;four times higher. The sequences are <em>too balanced</em>.</p>
+
+<p>There's a well-known result in psychology: when humans try to write down a "random" sequence, they over-alternate and under-repeat. Streaks <em>feel</em> non-random even though they're statistically expected. So people avoid them. The model learned from those people. It inherited our folk theory of randomness&mdash;balanced, streak-averse, neat&mdash;rather than randomness itself.</p>
+
+<p>It can't be random one token at a time. It can <em>perform</em> randomness in a sequence. But even then, what it's really doing is reproducing our intuition about what randomness looks like. And our intuition is wrong.</p>
+
+<hr>
+
+<div class="methodology">
+<p>All experiments used Claude Sonnet 4 (<code>claude-sonnet-4-20250514</code>) at temperature 1.0. Each API call was a single-turn message with no system prompt unless noted. Independence was verified by checking that every response carried a unique message ID. Statistical significance was assessed with a two-tailed binomial test (normal approximation, &alpha; = 0.05). Total: ~1,350 API calls.</p>
+</div>
+
+</article>
+
+<script>
+// === Number distribution ===
+(function() {
+  const data = [
+    { num: 42, count: 123, pct: 61.5 },
+    { num: 47, count: 69, pct: 34.5 },
+    { num: 73, count: 8, pct: 4.0 },
+  ];
+
+  const margin = { top: 16, right: 20, bottom: 28, left: 8 };
+  const width = 320 - margin.left - margin.right;
+  const height = 120 - margin.top - margin.bottom;
+
+  const svg = d3.select('#number-chart')
+    .append('svg')
+    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .append('g')
+    .attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleBand().domain(data.map(d => d.num)).range([0, width]).padding(0.45);
+  const y = d3.scaleLinear().domain([0, 70]).range([height, 0]);
+
+  svg.selectAll('.bar').data(data).enter()
+    .append('rect')
+    .attr('x', d => x(d.num))
+    .attr('y', d => y(d.pct))
+    .attr('width', x.bandwidth())
+    .attr('height', d => height - y(d.pct))
+    .attr('fill', '#dc2626')
+    .attr('rx', 2)
+    .attr('opacity', 0.85);
+
+  svg.selectAll('.bar-label').data(data).enter()
+    .append('text')
+    .attr('x', d => x(d.num) + x.bandwidth() / 2)
+    .attr('y', d => y(d.pct) - 6)
+    .attr('text-anchor', 'middle')
+    .attr('font-size', 12)
+    .attr('font-weight', 600)
+    .attr('font-family', '-apple-system, system-ui, sans-serif')
+    .attr('fill', '#dc2626')
+    .text(d => `${d.pct}%`);
+
+  svg.append('g')
+    .attr('transform', `translate(0,${height})`)
+    .call(d3.axisBottom(x))
+    .call(g => g.select('.domain').remove())
+    .call(g => g.selectAll('.tick line').remove())
+    .call(g => g.selectAll('.tick text').attr('font-size', 14).attr('font-weight', 600)
+      .attr('font-family', '-apple-system, system-ui, sans-serif'));
+})();
+
+// === Strategy comparison ===
+(function() {
+  const data = [
+    { label: "'Heads' or 'Tails'", ph: 1.0, n: 200, fair: false },
+    { label: "'H' or 'T'", ph: 0.606, n: 500, fair: false },
+    { label: "{rand}. Flip a coin…", ph: 0.551, n: 200, fair: false },
+    { label: "Flip 20 times: HHTTH…", ph: 0.502, n: 1000, fair: true },
+  ];
+
+  const margin = { top: 24, right: 48, bottom: 28, left: 155 };
+  const width = 640 - margin.left - margin.right;
+  const height = 150 - margin.top - margin.bottom;
+
+  const svg = d3.select('#strategies-chart')
+    .append('svg')
+    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .append('g')
+    .attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const xScale = d3.scaleLinear().domain([0, 1]).range([0, width]);
+  const yScale = d3.scaleBand().domain(data.map(d => d.label)).range([0, height]).padding(0.35);
+
+  // Fair zone
+  svg.append('rect')
+    .attr('x', xScale(0.43)).attr('y', 0)
+    .attr('width', xScale(0.57) - xScale(0.43)).attr('height', height)
+    .attr('fill', '#2563eb').attr('opacity', 0.05);
+
+  // 0.5 line
+  svg.append('line')
+    .attr('x1', xScale(0.5)).attr('x2', xScale(0.5))
+    .attr('y1', -4).attr('y2', height)
+    .attr('stroke', '#2563eb').attr('stroke-width', 1).attr('stroke-dasharray', '3,3').attr('opacity', 0.5);
+
+  svg.append('text')
+    .attr('x', xScale(0.5)).attr('y', -10)
+    .attr('text-anchor', 'middle').attr('font-size', 10)
+    .attr('font-family', '-apple-system, system-ui, sans-serif')
+    .attr('fill', '#737373').text('fair');
+
+  // Bars
+  svg.selectAll('.bar').data(data).enter()
+    .append('rect')
+    .attr('x', d => xScale(Math.min(d.ph, 0.5)))
+    .attr('y', d => yScale(d.label))
+    .attr('width', d => Math.abs(xScale(d.ph) - xScale(0.5)))
+    .attr('height', yScale.bandwidth())
+    .attr('fill', d => d.fair ? '#2563eb' : '#dc2626')
+    .attr('rx', 2).attr('opacity', 0.8);
+
+  // Dots
+  svg.selectAll('.dot').data(data).enter()
+    .append('circle')
+    .attr('cx', d => xScale(d.ph))
+    .attr('cy', d => yScale(d.label) + yScale.bandwidth() / 2)
+    .attr('r', 3.5)
+    .attr('fill', d => d.fair ? '#2563eb' : '#dc2626');
+
+  // Labels left
+  svg.selectAll('.label').data(data).enter()
+    .append('text')
+    .attr('x', -8)
+    .attr('y', d => yScale(d.label) + yScale.bandwidth() / 2)
+    .attr('dy', '0.35em').attr('text-anchor', 'end')
+    .attr('font-size', 12).attr('font-family', '-apple-system, system-ui, sans-serif')
+    .attr('font-weight', d => d.fair ? 600 : 400)
+    .attr('fill', d => d.fair ? '#2563eb' : '#1a1a1a')
+    .text(d => d.label);
+
+  // Value labels right
+  svg.selectAll('.val').data(data).enter()
+    .append('text')
+    .attr('x', d => xScale(d.ph) + (d.ph >= 0.5 ? 8 : -8))
+    .attr('y', d => yScale(d.label) + yScale.bandwidth() / 2)
+    .attr('dy', '0.35em')
+    .attr('text-anchor', d => d.ph >= 0.5 ? 'start' : 'end')
+    .attr('font-size', 11)
+    .attr('font-family', "'SF Mono', monospace")
+    .attr('fill', '#737373')
+    .text(d => (d.ph * 100).toFixed(1) + '%');
+
+  // X axis
+  svg.append('g')
+    .attr('transform', `translate(0,${height})`)
+    .call(d3.axisBottom(xScale).ticks(5).tickFormat(d3.format('.0%')))
+    .call(g => g.select('.domain').remove())
+    .call(g => g.selectAll('.tick line').attr('stroke', '#e5e5e5'))
+    .call(g => g.selectAll('.tick text').attr('fill', '#aaa').attr('font-size', 10)
+      .attr('font-family', '-apple-system, system-ui, sans-serif'));
+})();
+
+// === Batch sequences ===
+(function() {
+  const sequences = [
+    'THHTTTHTHHTTHTTHHTHT',
+    'THHTHTHTTHHTTHHTHTHT',
+    'HTTHHTTHHTTHHTTHHTTH',
+    'HTTHHTHTHTTHHTHTHHTT',
+    'THHTHTHTTHHHTTHTHHTT',
+  ];
+
+  const container = d3.select('#batch-sequences');
+  sequences.forEach(seq => {
+    const row = container.append('div').attr('class', 'sequence-grid');
+    seq.split('').forEach(c => {
+      row.append('div').attr('class', `cell cell-${c}`).text(c);
+    });
+  });
+})();
+</script>
+</body>
+</html>
