@@ -229,11 +229,7 @@
 
 <p>There's a well-known result in psychology: when humans try to write down a "random" sequence, they over-alternate and under-repeat. Streaks <em>feel</em> non-random even though they're statistically expected. So people avoid them. The model learned from those people. It inherited our folk theory of randomness&mdash;balanced, streak-averse, neat&mdash;rather than randomness itself.</p>
 
-<p>It can't be random one token at a time. It can <em>perform</em> randomness in a sequence. But even then, what it's really doing is reproducing our intuition about what randomness looks like. And our intuition is wrong.</p>
-
-<p>The strange thing is, LLMs <em>are</em> indeterministic. There's real randomness in the sampling mechanism. And it still wasn't enough to flip a single tails in 200 tries. The randomness is there but it's shallow&mdash;it operates on token probabilities that are already deeply biased by training. A loaded die is random too. The roll is unpredictable, the outcome isn't.</p>
-
-<p>Without specific constraints, the model defaults to the most probable pattern. With the right structure, it got to 50/50&mdash;but still couldn't produce a streak of four, because nothing asked it to. It got exactly as far as our instructions could see. Everything else was filled in by the training data's defaults. I suspect that's true of more than coin flips.</p>
+<p>We looked at those sequences and thought they looked random. Of course we did. The model learned what randomness looks like from people, and we can't tell our version apart from the real thing. That's how biases work&mdash;you can't see them when you share them.</p>
 
 <hr>
 
