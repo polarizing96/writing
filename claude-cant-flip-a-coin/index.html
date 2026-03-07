@@ -220,20 +220,16 @@
 
 <p>There's a well-known result in psychology: when humans try to write down a "random" sequence, they over-alternate and under-repeat. Streaks <em>feel</em> non-random even though they're statistically expected, so people avoid them. The model learned from those people. It inherited our folk theory of randomness&mdash;balanced, streak-averse, neat&mdash;rather than randomness itself.</p>
 
+<p>The batch prompt was a constraint. It told the model what the output should look like, and the model matched it&mdash;502/498, right on target. But it only matched what we specified. We described frequency, so we got frequency. We said nothing about streaks, so the model fell back on its training data, which fell back on human intuition, which avoids streaks. Every part of the output we didn't constrain was filled in by defaults we didn't notice, because we share them.</p>
+
 <h2>It's not just coins</h2>
 
-<p>I tried numbers too. "Pick a random number between 1 and 100." Sonnet picks 47. Every time. Opus picks 73. Across 200 calls, the model produced exactly three distinct values:</p>
+<p>"Pick a random number between 1 and 100." Sonnet picks 47. Every time. Opus picks 73. Across 200 calls, the entire vocabulary was three numbers:</p>
 
 <div class="viz" id="number-chart"></div>
-<div class="viz-caption" style="margin-bottom: 32px;">200 API calls. "Pick a random number between 1 and 100." That's the whole distribution.</div>
+<div class="viz-caption" style="margin-bottom: 32px;">200 API calls. That's the whole distribution.</div>
 
-<p>I don't know why these specific numbers, but they're the same ones humans disproportionately pick when asked to "say a random number." The same pattern: the model doesn't generate randomness, it reproduces what humans think randomness looks like.</p>
-
-<p>The batch prompt was a constraint. It told the model what the output should look like, and the model matched it&mdash;502/498, right on target. But it only matched what we specified. We described frequency, so we got frequency. We said nothing about streaks, so the model fell back on its training data, which fell back on human intuition, which avoids streaks.</p>
-
-<p>Every part of the output we didn't constrain was filled in by defaults. And we didn't notice, because we share the same defaults. The sequences looked random to us for the same reason the model produced them that way&mdash;we both learned the same folk theory of what randomness is supposed to look like.</p>
-
-<p>The model will match whatever rules you give it. For everything else, you get its best guess&mdash;which is really our best guess, reflected back.</p>
+<p>The same ones humans disproportionately pick when asked to "say a random number." The model will match whatever rules you give it. For everything else, you get its defaults&mdash;which are really our defaults, reflected back.</p>
 
 <hr>
 
