@@ -184,10 +184,10 @@
 <h1>Claude Can't Flip a Coin</h1>
 <p class="meta">March 2026</p>
 
-<p>Claude says heads. Every time. I wrote a script to ask 200 times&mdash;each one a fresh API call, no memory, no conversation&mdash;and got 200 heads, zero tails.</p>
+<p>Claude says heads. Every time.</p>
 
 <div class="big-number">200 / 0</div>
-<div class="big-label">heads / tails, across 200 independent API calls</div>
+<div class="big-label">heads / tails, across 200 independent API calls — each one a fresh request, no memory, no conversation</div>
 
 <p>LLMs don't flip coins. They predict the next token. The model isn't choosing between heads and tails&mdash;it's answering a different question: <em>what would a helpful AI assistant most likely say here?</em></p>
 
@@ -212,15 +212,13 @@
 <div id="batch-sequences"></div>
 <div class="viz-caption" style="margin-bottom: 32px;">Per-sequence P(Heads): mean = 0.502, std = 0.028</div>
 
-<h2>Too balanced</h2>
-
 <p>But look more carefully. Every sequence has roughly 10 heads and 10 tails. The longest streak in any of them is three. In truly random 20-flip sequences, 77% should contain a run of four or more, and 47% should have a run of five or more. The model produces none.</p>
 
 <p>The standard deviation of the heads ratio across our 50 sequences is 0.028. For true randomness it should be 0.112&mdash;four times higher.</p>
 
 <p>There's a well-known result in psychology: when humans try to write down a "random" sequence, they over-alternate and under-repeat. Streaks <em>feel</em> non-random even though they're statistically expected, so people avoid them. The model learned from those people. It inherited our folk theory of randomness&mdash;balanced, streak-averse, neat&mdash;rather than randomness itself.</p>
 
-<p>The batch prompt was a constraint. It told the model what the output should look like, and the model matched it&mdash;502/498, right on target. But it only matched what we specified. We described frequency, so we got frequency. We said nothing about streaks, so the model fell back on its training data, which fell back on human intuition, which avoids streaks. Every part of the output we don't constrain is filled in by defaults we don't notice.</p>
+<p>The batch prompt was a constraint. It told the model what the output should look like, and the model matched it&mdash;502/498, right on target. But it only matched what we specified. We described frequency, so we got frequency. We said nothing about streaks, so the model fell back on its training data, which fell back on human intuition, which avoids streaks.</p>
 
 <p style="font-size: 22px; font-style: italic; margin: 36px 0; line-height: 1.5; color: var(--fg);">Every part of the output we don't constrain is filled in by defaults we don't notice.</p>
 
