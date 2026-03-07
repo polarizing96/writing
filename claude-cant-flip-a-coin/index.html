@@ -220,9 +220,9 @@
 
 <p>There's a well-known result in psychology: when humans try to write down a "random" sequence, they over-alternate and under-repeat. Streaks <em>feel</em> non-random even though they're statistically expected, so people avoid them. The model learned from those people. It inherited our folk theory of randomness&mdash;balanced, streak-averse, neat&mdash;rather than randomness itself.</p>
 
-<p>The batch prompt was a constraint. It told the model what the output should look like, and the model matched it&mdash;502/498, right on target. But it only matched what we specified. We described frequency, so we got frequency. We said nothing about streaks, so the model fell back on its training data, which fell back on human intuition, which avoids streaks. Every part of the output we didn't constrain was filled in by defaults we didn't notice, because we share them.</p>
+<p>The batch prompt was a constraint. It told the model what the output should look like, and the model matched it&mdash;502/498, right on target. But it only matched what we specified. We described frequency, so we got frequency. We said nothing about streaks, so the model fell back on its training data, which fell back on human intuition, which avoids streaks. Every part of the output we don't constrain is filled in by defaults we don't notice.</p>
 
-<p style="font-size: 22px; font-style: italic; margin: 36px 0; line-height: 1.5; color: var(--fg);">Every part of the output we didn't constrain was filled in by defaults we didn't notice, because we share them.</p>
+<p style="font-size: 22px; font-style: italic; margin: 36px 0; line-height: 1.5; color: var(--fg);">Every part of the output we don't constrain is filled in by defaults we don't notice.</p>
 
 <h2>It's not just coins</h2>
 
